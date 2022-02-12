@@ -3,6 +3,7 @@ import { useState } from 'react';
 interface useScoreProps {
   score: number;
   calcScore: (stage: number, leftTime: number) => void;
+  resetScore: () => void;
 }
 
 function useScore(): useScoreProps {
@@ -11,7 +12,11 @@ function useScore(): useScoreProps {
   const calcScore = (stage: number, leftTime: number) => {
     setScore(prev => prev + Math.pow(stage, 3) * leftTime);
   };
-  return { calcScore, score };
+
+  const resetScore = () => {
+    setScore(0);
+  };
+  return { calcScore, score, resetScore };
 }
 
 export default useScore;
