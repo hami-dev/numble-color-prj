@@ -5,14 +5,14 @@ import { calcSquareLength, calcSideLength } from 'utils/Utils';
 
 interface SquareBoxProps {
   stage: number;
-  handleSuccessLevel: () => void;
-  handleFailLevel: () => void;
+  nextStage: () => void;
+  minusCountdown: () => void;
 }
 
 const SquareBox: React.FC<SquareBoxProps> = ({
   stage,
-  handleSuccessLevel,
-  handleFailLevel,
+  nextStage,
+  minusCountdown,
 }): ReactElement => {
   const totalLen = calcSquareLength(stage);
   const len = calcSideLength(stage);
@@ -42,16 +42,16 @@ const SquareBox: React.FC<SquareBoxProps> = ({
   };
 
   const makeColor = () => {
-    const cha = 100 - stage * 2;
+    const sub = 100 - stage * 2;
     const origin = {
       r: genRandomNum(255),
       g: genRandomNum(255),
       b: genRandomNum(255),
     };
     const newColor = {
-      r: calcColor(origin.r, Math.floor(cha / 3)),
-      g: calcColor(origin.g, Math.floor(cha / 3)),
-      b: calcColor(origin.b, Math.floor(cha / 3)),
+      r: calcColor(origin.r, Math.floor(sub / 3)),
+      g: calcColor(origin.g, Math.floor(sub / 3)),
+      b: calcColor(origin.b, Math.floor(sub / 3)),
     };
 
     return {
@@ -64,10 +64,8 @@ const SquareBox: React.FC<SquareBoxProps> = ({
     const answerList = makeSquareList();
     const { answerColor, nonAnswerColor } = makeColor();
     return answerList.map(item => {
-      if (item)
-        return <Answer onClick={handleSuccessLevel} color={answerColor} />;
-      else
-        return <NonAnswer onClick={handleFailLevel} color={nonAnswerColor} />;
+      if (item) return <Answer onClick={nextStage} color={answerColor} />;
+      else return <NonAnswer onClick={minusCountdown} color={nonAnswerColor} />;
     });
   }, [totalLen, len, stage]);
 
@@ -86,14 +84,13 @@ const SquareWrapper = styled.div<{ len: number; stage: number }>`
   width: 400px;
   height: 400px;
   display: grid;
-  gap: ${({ stage }) => (stage < 15 ? `5px` : `3px`)};
   grid-template-columns: ${({ len }) => `repeat(${len}, 1fr)`};
+  gap: ${({ stage }) => (stage < 15 ? `5px` : `3px`)};
 `;
 
 const Answer = styled.div<{ color: string }>`
   background-color: ${({ color }) => `${color}`};
 `;
-const NonAnswer = styled.div`
-  /* background-color: RGB(0, 233, 255); */
+const NonAnswer = styled.div<{ color: string }>`
   background-color: ${({ color }) => `${color}`};
 `;
