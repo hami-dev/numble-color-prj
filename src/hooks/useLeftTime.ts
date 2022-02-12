@@ -10,7 +10,7 @@ interface useLeftTimeProps {
 
 function useLeftTime(): useLeftTimeProps {
   const INITIAL_TIME = 15;
-  const [leftTime, setLeftTime] = useState(INITIAL_TIME);
+  const [leftTime, setLeftTime] = useState<number>(INITIAL_TIME);
 
   const timeInterval: { current: NodeJS.Timeout | null } = useRef(null);
 

@@ -6,7 +6,7 @@ interface useScoreProps {
 }
 
 function useScore(): useScoreProps {
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState<number>(0);
 
   const calcScore = (stage: number, leftTime: number) => {
     setScore(prev => prev + Math.pow(stage, 3) * leftTime);

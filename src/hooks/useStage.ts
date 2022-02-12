@@ -7,7 +7,7 @@ interface useStageProps {
 }
 
 function useStage(): useStageProps {
-  const [stage, setStage] = useState(1);
+  const [stage, setStage] = useState<number>(1);
 
   const nextStage = () => {
     setStage(stage => stage + 1);
