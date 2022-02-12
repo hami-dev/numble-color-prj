@@ -19,17 +19,7 @@ const Main = () => {
     minusCountdown,
   } = useLeftTime();
   const { stage, nextStage, resetStage } = useStage();
-  const { score, calcScore } = useScore();
-
-  const handleSuccessLevel = () => {
-    calcScore(stage, leftTime);
-    nextStage();
-    resetCountdown();
-  };
-
-  const handleFailLevel = () => {
-    minusCountdown();
-  };
+  const { score, calcScore, resetScore } = useScore();
 
   useEffect(() => {
     startCountdown();
@@ -44,8 +34,14 @@ const Main = () => {
       alert(`스테이지: ${stage}, 점수: ${score}`);
       resetStage();
       resetCountdown();
+      resetScore();
     }
   }, [leftTime]);
+
+  useEffect(() => {
+    calcScore(stage - 1, leftTime);
+    resetCountdown();
+  }, [stage]);
 
   return (
     <GameWrapper>
@@ -60,8 +56,8 @@ const Main = () => {
       </ScoreWrapper>
       <SquareBox
         stage={stage}
-        handleSuccessLevel={handleSuccessLevel}
-        handleFailLevel={handleFailLevel}
+        nextStage={nextStage}
+        minusCountdown={minusCountdown}
       />
     </GameWrapper>
   );
